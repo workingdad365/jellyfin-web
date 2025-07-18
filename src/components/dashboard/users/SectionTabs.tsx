@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 
 import globalize from 'lib/globalize';
 import { navigate } from '../../../utils/dashboard';
@@ -17,10 +17,21 @@ function useNavigate(url: string): () => void {
 }
 
 const SectionTabs: FunctionComponent<IProps> = ({ activeTab }: IProps) => {
+    const [isAdmin, setIsAdmin] = useState(false);
+
+    useEffect(() => {
+        window.ApiClient.getCurrentUser().then(user => {
+            setIsAdmin(!!user?.Policy?.IsAdministrator);
+        }).catch(err => {
+            console.error('[SectionTabs] failed to get current user', err);
+        });
+    }, []);
+
     const onClickProfile = useNavigate('/dashboard/users/profile');
     const onClickAccess = useNavigate('/dashboard/users/access');
     const onClickParentalControl = useNavigate('/dashboard/users/parentalcontrol');
     const clickPassword = useNavigate('/dashboard/users/password');
+
     return (
         <div
             data-role='controlgroup'
@@ -47,13 +58,15 @@ const SectionTabs: FunctionComponent<IProps> = ({ activeTab }: IProps) => {
                 onClick={onClickParentalControl}>
                 {globalize.translate('TabParentalControl')}
             </LinkButton>
-            <LinkButton
-                href='#'
-                data-role='button'
-                className={activeTab === 'userpassword' ? 'ui-btn-active' : ''}
-                onClick={clickPassword}>
-                {globalize.translate('HeaderPassword')}
-            </LinkButton>
+            {isAdmin && (
+                <LinkButton
+                    href='#'
+                    data-role='button'
+                    className={activeTab === 'userpassword' ? 'ui-btn-active' : ''}
+                    onClick={clickPassword}>
+                    {globalize.translate('HeaderPassword')}
+                </LinkButton>
+            )}
         </div>
     );
 };

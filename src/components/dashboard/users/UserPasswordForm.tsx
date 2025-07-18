@@ -49,7 +49,7 @@ const UserPasswordForm: FunctionComponent<IProps> = ({ userId }: IProps) => {
             (page.querySelector('#fldCurrentPassword') as HTMLDivElement).classList.add('hide');
         }
 
-        const canChangePassword = loggedInUser?.Policy?.IsAdministrator || user.current.Policy.EnableUserPreferenceAccess;
+        const canChangePassword = loggedInUser?.Policy?.IsAdministrator;
         (page.querySelector('.passwordSection') as HTMLDivElement).classList.toggle('hide', !canChangePassword);
 
         import('../../autoFocuser').then(({ default: autoFocuser }) => {
