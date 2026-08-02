@@ -1,7 +1,7 @@
 import icon from '../../assets/img/icon-transparent.png';
 
-import { PluginType } from '../../types/plugin.ts';
-import { randomInt } from '../../utils/number.ts';
+import { PluginType } from 'constants/pluginType';
+import { randomInt } from 'utils/number';
 
 export default function () {
     const self = this;

@@ -13,8 +13,7 @@
     }, {
       "name": "Dark",
       "id": "dark",
-      "color": "#202020",
-      "default": true
+      "color": "#202020"
     }, {
       "name": "Light",
       "id": "light",
@@ -22,7 +21,8 @@
     }, {
       "name": "Purple Haze",
       "id": "purplehaze",
-      "color": "#000420"
+      "color": "#000420",
+      "default": true
     }, {
       "name": "WMC",
       "id": "wmc",
@@ -45,6 +45,7 @@
     "logoScreensaver/plugin",
     "sessionPlayer/plugin",
     "chromecastPlayer/plugin",
+    "stillWatching/plugin",
     "syncPlay/plugin"
   ]
 }
