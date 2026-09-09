@@ -4,6 +4,7 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import LibraryAdd from '@mui/icons-material/LibraryAdd';
 import Palette from '@mui/icons-material/Palette';
 import People from '@mui/icons-material/People';
+import Badge from '@mui/icons-material/Badge';
 import PlayCircle from '@mui/icons-material/PlayCircle';
 import Settings from '@mui/icons-material/Settings';
 import Collapse from '@mui/material/Collapse';
@@ -115,6 +116,14 @@ const ServerDrawerSection = () => {
                     </ListItemLink>
                 </List>
             </Collapse>
+            <ListItem disablePadding>
+                <ListItemLink to='/dashboard/personaliases'>
+                    <ListItemIcon>
+                        <Badge />
+                    </ListItemIcon>
+                    <ListItemText primary={globalize.translate('PersonAliasesTitle')} />
+                </ListItemLink>
+            </ListItem>
             <ListItem disablePadding>
                 <ListItemButton onClick={onPlaybackSectionClick}>
                     <ListItemIcon>
