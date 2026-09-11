@@ -28,7 +28,7 @@ import { getAliasError } from '../validation';
 interface Props {
     initialAlias?: TmdbPersonAlias;
     onClose: () => void;
-    onSaved: () => void;
+    onSaved: (queuedCount: number) => void;
 }
 
 const errorMessage = (error: unknown) => {
@@ -40,7 +40,7 @@ const errorMessage = (error: unknown) => {
 };
 
 const PersonAliasDialog = ({ initialAlias, onClose, onSaved }: Props) => {
-    const { query, mutation } = usePersonAliases();
+    const { query, mutation, refreshItems } = usePersonAliases();
     const [ search, setSearch ] = useState('');
     const [ submittedSearch, setSubmittedSearch ] = useState('');
     const [ page, setPage ] = useState(1);
@@ -89,6 +89,7 @@ const PersonAliasDialog = ({ initialAlias, onClose, onSaved }: Props) => {
         if (!canSave || saving) return;
         setSaving(true);
         setSaveError(undefined);
+        refreshItems.reset();
         try {
             for (const draft of drafts.filter(person => !completed.includes(person.TmdbId))) {
                 try {
@@ -99,7 +100,17 @@ const PersonAliasDialog = ({ initialAlias, onClose, onSaved }: Props) => {
                     return;
                 }
             }
-            onSaved();
+            const names = Array.from(new Set([
+                submittedSearch,
+                ...candidates.map(person => person.Name),
+                initialAlias?.Name ?? ''
+            ].map(name => name.trim()).filter(Boolean)));
+            try {
+                const queuedCount = await refreshItems.mutateAsync(names);
+                onSaved(queuedCount);
+            } catch {
+                return;
+            }
         } finally {
             setSaving(false);
         }
@@ -182,6 +193,7 @@ const PersonAliasDialog = ({ initialAlias, onClose, onSaved }: Props) => {
                             {initialAlias && details.isPending && <Loading />}
                             {initialAlias && details.isError && <Alert severity='error' action={<Button onClick={() => { void details.refetch(); }}>{globalize.translate('Refresh')}</Button>}>{errorMessage(details.error)}</Alert>}
                             {query.isError && <Alert severity='error'>{errorMessage(query.error)}</Alert>}
+                            {refreshItems.isError && <Alert severity='error'>{globalize.translate('PersonAliasRefreshFailed')}</Alert>}
                             {drafts.map((draft, index) => {
                                 const person = candidates.find(candidate => candidate.TmdbId === draft.TmdbId);
                                 const done = completed.includes(draft.TmdbId);

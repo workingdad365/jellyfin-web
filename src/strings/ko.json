@@ -13,6 +13,8 @@
     "PersonAliasNameConflict": "다른 인물이 사용 중인 이름입니다.",
     "PersonAliasRequestError": "인물 별칭 요청에 실패했습니다. 연결과 관리자 권한을 확인하세요.",
     "PersonAliasSaved": "인물 별칭 변경을 저장했습니다.",
+    "PersonAliasRefreshQueued": "인물 별칭을 저장하고 작품 {0}개의 메타데이터 및 이미지 전체 교체를 예약했습니다.",
+    "PersonAliasRefreshFailed": "별칭은 저장되었으나 작품 갱신 예약에 실패했습니다. 저장을 다시 누르면 갱신 예약을 재시도합니다.",
     "PersonAliasFindPeople": "TMDB 인물 검색",
     "PersonAliasFindName": "검색할 인물명",
     "PersonAliasEditSelected": "선택한 인물의 별칭 편집",

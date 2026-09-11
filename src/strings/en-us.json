@@ -13,6 +13,8 @@
     "PersonAliasNameConflict": "Another person already uses this name.",
     "PersonAliasRequestError": "Person alias request failed. Check your connection and administrator permissions.",
     "PersonAliasSaved": "Person alias changes saved.",
+    "PersonAliasRefreshQueued": "Person aliases saved. Full metadata and image replacement queued for {0} items.",
+    "PersonAliasRefreshFailed": "Aliases were saved, but item refresh could not be queued. Save again to retry queuing the refresh.",
     "PersonAliasFindPeople": "Search TMDB people",
     "PersonAliasFindName": "Person name to search",
     "PersonAliasEditSelected": "Edit selected person aliases",

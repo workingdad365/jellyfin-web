@@ -64,6 +64,9 @@ export const usePersonAliases = () => {
     const query = useQuery({
         queryKey,
         enabled,
+        select: (aliases: TmdbPersonAlias[]) => [ ...aliases ].sort((first, second) => (
+            first.Name.localeCompare(second.Name, 'ko') || first.TmdbId - second.TmdbId
+        )),
         queryFn: async ({ signal }) => {
             if (!api) throw new Error('API unavailable');
             const response = await api.axiosInstance.get<TmdbPersonAlias[]>(
@@ -101,5 +104,18 @@ export const usePersonAliases = () => {
         }
     });
 
-    return { query, mutation };
+    const refreshItems = useMutation({
+        retry: false,
+        mutationFn: async (names: string[]) => {
+            if (!api || !enabled) throw new Error('Administrator authentication required');
+            const response = await api.axiosInstance.post<number>(
+                api.getUri('/TmdbPersonAliases/RefreshItems'),
+                names,
+                api.configuration.baseOptions
+            );
+            return response.data;
+        }
+    });
+
+    return { query, mutation, refreshItems };
 };

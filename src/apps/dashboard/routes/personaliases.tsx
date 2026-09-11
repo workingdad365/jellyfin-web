@@ -47,6 +47,7 @@ export const Component = () => {
     const [ editingAlias, setEditingAlias ] = useState<TmdbPersonAlias>();
     const [ deleting, setDeleting ] = useState<TmdbPersonAlias>();
     const [ saved, setSaved ] = useState(false);
+    const [ queuedCount, setQueuedCount ] = useState<number>();
     const aliases = query.data ?? [];
     const searchTerm = search.trim().toLocaleLowerCase();
     const filtered = aliases.filter(alias => alias.Name.toLocaleLowerCase().includes(searchTerm)
@@ -55,6 +56,7 @@ export const Component = () => {
     const openForm = (alias?: TmdbPersonAlias) => {
         mutation.reset();
         setSaved(false);
+        setQueuedCount(undefined);
         setEditingAlias(alias);
         setFormOpen(true);
     };
@@ -64,6 +66,7 @@ export const Component = () => {
         mutation.mutate({ type: 'delete', tmdbId: deleting.TmdbId }, {
             onSuccess: () => {
                 setDeleting(undefined);
+                setQueuedCount(undefined);
                 setSaved(true);
             }
         });
@@ -74,7 +77,9 @@ export const Component = () => {
             <Box className='content-primary'>
                 <Stack spacing={3} sx={{ maxWidth: 1000, minWidth: 0 }}>
                     <Typography variant='h1'>{globalize.translate('PersonAliasesTitle')}</Typography>
-                    {saved && <Alert severity='success' onClose={() => setSaved(false)}>{globalize.translate('PersonAliasSaved')}</Alert>}
+                    {saved && <Alert severity='success' onClose={() => setSaved(false)}>{queuedCount === undefined
+                        ? globalize.translate('PersonAliasSaved')
+                        : globalize.translate('PersonAliasRefreshQueued', queuedCount)}</Alert>}
                     <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
                         <TextField
                             label={globalize.translate('PersonAliasSearch')}
@@ -138,8 +143,9 @@ export const Component = () => {
             {formOpen && <PersonAliasDialog
                 initialAlias={editingAlias}
                 onClose={() => setFormOpen(false)}
-                onSaved={() => {
+                onSaved={count => {
                     setFormOpen(false);
+                    setQueuedCount(count);
                     setSaved(true);
                 }}
             />}
