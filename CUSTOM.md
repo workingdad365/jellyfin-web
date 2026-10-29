@@ -93,6 +93,25 @@
 - [package.json](package.json)에 `npm` 및 Windows x64용 `sass-embedded-win32-x64` 의존성을 추가하고 [package-lock.json](package-lock.json)에 반영했다.
 - 별칭 입력 검증 단위 테스트를 추가했다. 테스트 파일의 존재와 이번 작성 시 테스트 실행 여부는 구분한다.
 
+## 6. Abyss 재생 컨트롤 투명화
+
+- [scripts/abyss/overrides.css](scripts/abyss/overrides.css)는 재생 컨트롤 패널과 바깥 컨테이너의 블러, 배경, 그림자를 제거한다.
+- [scripts/abyss/manage.ps1](scripts/abyss/manage.ps1)는 서버의 `Custom CSS`에 Abyss 테마와 덮어쓰기 규칙을 함께 적용한다. 재적용 시 규칙이 중복되지 않으며, 제거 시 같은 관리 블록에서 함께 삭제된다.
+- 기존 설치 관리 디렉터리의 `installation.json`, `source/setup.ps1`, Spotlight 파일과 `backup/display-preferences.json`을 사용한다. `JELLYFIN_API_KEY` 환경 변수에 관리자 API 키가 필요하다.
+- 아래 명령은 저장소 루트에서 실행하며, 설치 관리 경로의 기본 운영 예시는 `C:\jellyfin\abyss`다. 이 스크립트는 해당 경로로 복사한 뒤 실행한다.
+
+```powershell
+$installRoot = 'C:\jellyfin\abyss'
+Copy-Item -Path .\scripts\abyss\manage.ps1, .\scripts\abyss\overrides.css -Destination $installRoot -Force
+pwsh -File "$installRoot\manage.ps1" -Action Install
+```
+
+웹 재빌드 후 Spotlight 재적용에도 같은 명령을 사용한다. 테마 제거 및 기존 표시 테마 설정 복원은 다음 명령을 사용한다.
+
+```powershell
+pwsh -File C:\jellyfin\abyss\manage.ps1 -Action Uninstall
+```
+
 ## 주요 커스텀 커밋
 
 | 커밋 | 변경 내용 |

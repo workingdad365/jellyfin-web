@@ -1,0 +1,9 @@
+/* 재생 컨트롤 패널의 배경과 블러 제거. */
+#videoOsdPage .videoOsdBottom,
+#videoOsdPage .videoOsdBottom .osdControls {
+    /* stylelint-disable-next-line property-no-vendor-prefix -- Safari의 Abyss 블러 규칙 해제. */
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
