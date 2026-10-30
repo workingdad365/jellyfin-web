@@ -112,6 +112,13 @@ pwsh -File "$installRoot\manage.ps1" -Action Install
 pwsh -File C:\jellyfin\abyss\manage.ps1 -Action Uninstall
 ```
 
+## 7. 사용자 지정 라이브러리 이미지의 제목 표시
+
+- [scripts/abyss/overrides.css](scripts/abyss/overrides.css)는 홈 화면의 영화와 TV쇼 카드에서 Abyss가 숨긴 기존 제목을 이미지 중앙에 흰색으로 표시한다. 글자 크기는 카드 너비에 비례하며 그림자로 가독성을 보완한다.
+- 대상은 두 라이브러리의 ID로 지정한다. 이름 변경은 기존 제목에 자동 반영되며, 다른 라이브러리에도 적용하려면 CSS 선택자에 해당 ID를 추가한다.
+- 자동 생성 이미지에 제목이 포함된 TV쇼 미완결은 대상에서 제외한다. 제목은 클릭을 가로채지 않으며, 데스크톱, 모바일, 웹 TV 레이아웃에 같은 규칙을 적용한다.
+- 적용 및 재적용은 위 Abyss 설치 관리 명령을 사용한다.
+
 ## 주요 커스텀 커밋
 
 | 커밋 | 변경 내용 |
